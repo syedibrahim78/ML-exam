@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Machine Learning - Exam Answers</title>
+<style>
+  body{
+    font-family:"Times New Roman", serif;
+    font-size:17pt;
+    line-height:1.55;
+    color:#000;
+    background:#fff;
+    margin:25px;
+  }
+  h1{text-align:center;font-size:24pt;text-decoration:underline;margin-bottom:4px;}
+  h2{text-align:center;font-size:16pt;font-weight:normal;margin-top:0;margin-bottom:25px;}
+  .qbox{
+    border:3px solid #000;
+    padding:18px 22px;
+    margin-bottom:28px;
+    page-break-inside:avoid;
+  }
+  .qhead{
+    font-size:19pt;
+    font-weight:bold;
+    text-align:left;
+    border-bottom:2px solid #000;
+    padding-bottom:6px;
+    margin-bottom:12px;
+  }
+  .marks{float:right;font-size:15pt;}
+  .sub{font-weight:bold;text-decoration:underline;margin-top:10px;}
+  ul{margin-top:6px;}
+  li{margin-bottom:6px;text-align:justify;}
+  p{text-align:justify;margin:8px 0;}
+  .eq{text-align:center;font-style:italic;font-size:17pt;margin:10px 0;}
+  table{border-collapse:collapse;width:100%;margin-top:10px;font-size:15pt;}
+  th,td{border:1.5px solid #000;padding:7px;text-align:left;}
+  th{font-weight:bold;}
+</style>
+</head>
+<body>
+
+<h1>MACHINE LEARNING</h1>
+<h2>Exam Preparation - Question &amp; Answer Notes</h2>
+
+<!-- Q1 -->
+<div class="qbox">
+<div class="qhead">1. EM Algorithm with a Suitable Example <span class="marks">[5 Marks]</span></div>
+
+<p><b>Definition:</b> The Expectation–Maximization (EM) algorithm is an iterative
+method used to find Maximum Likelihood estimates of parameters in models that
+contain <b>hidden (latent) variables</b> or missing data.</p>
+
+<div class="sub">Steps of EM Algorithm</div>
+<ul>
+<li><b>Initialization:</b> Assign random initial values to the model parameters &theta;.</li>
+<li><b>E-Step (Expectation):</b> Using current parameters, compute the expected
+value of the hidden variables, i.e. the posterior probability
+P(Z | X, &theta;<sup>old</sup>).</li>
+<li><b>M-Step (Maximization):</b> Re-estimate the parameters &theta; so that the
+expected log-likelihood computed in the E-step is maximized.</li>
+<li><b>Repeat:</b> E-step and M-step are repeated until the log-likelihood
+converges (no significant change).</li>
+</ul>
+
+<div class="sub">Example: Two Coins Problem</div>
+<p>Two biased coins A and B with unknown head probabilities &theta;<sub>A</sub>
+and &theta;<sub>B</sub>. A coin is picked randomly (we do <b>not</b> know which)
+and tossed 10 times; this is repeated 5 times. Only the number of heads is
+recorded — the identity of the coin is the <b>hidden variable</b>.</p>
+<ul>
+<li><b>E-Step:</b> For each set of tosses, compute the probability that it came
+from coin A or coin B using the current &theta; values.</li>
+<li><b>M-Step:</b> Update &theta;<sub>A</sub> and &theta;<sub>B</sub> as the
+weighted average of heads, using those probabilities as weights.</li>
+<li>After a few iterations the estimates converge close to the true values.</li>
+</ul>
+
+<div class="sub">Applications</div>
+<p>Gaussian Mixture Models, Hidden Markov Models (Baum–Welch), missing-data
+imputation, and clustering.</p>
+</div>
+
+<!-- Q2 -->
+<div class="qbox">
+<div class="qhead">2. Factor Analysis and its Role in Dimensionality Reduction <span class="marks">[5 Marks]</span></div>
+
+<p><b>Definition:</b> Factor Analysis (FA) is a statistical latent-variable
+technique which explains the correlations among a large set of observed
+variables using a <b>small number of unobserved variables called factors</b>.</p>
+
+<div class="sub">Model</div>
+<div class="eq">x = &Lambda; z + &mu; + &epsilon;</div>
+<ul>
+<li><b>x</b> – observed d-dimensional data vector.</li>
+<li><b>z</b> – latent factor vector of dimension k (k &lt;&lt; d), z ~ N(0, I).</li>
+<li><b>&Lambda;</b> – factor loading matrix showing how much each factor
+influences each variable.</li>
+<li><b>&mu;</b> – mean vector, <b>&epsilon;</b> – noise, &epsilon; ~ N(0, &Psi;)
+with diagonal &Psi; (unique variance of each variable).</li>
+</ul>
+
+<div class="sub">Role in Dimensionality Reduction</div>
+<ul>
+<li>Represents d observed features using only k factors, so storage and
+computation are reduced.</li>
+<li>Removes redundancy by grouping highly correlated variables into one factor.</li>
+<li>Separates <b>common variance</b> (shared, useful information) from
+<b>noise/unique variance</b>, so the reduced data is cleaner.</li>
+<li>Gives interpretable factors (e.g. marks in Physics, Chemistry, Maths reduce
+to a single factor "Science Ability").</li>
+<li>Helps in visualization and avoids the curse of dimensionality, improving
+model accuracy.</li>
+</ul>
+
+<div class="sub">FA vs PCA</div>
+<table>
+<tr><th>Factor Analysis</th><th>PCA</th></tr>
+<tr><td>Probabilistic generative model; explains covariance</td><td>Deterministic; maximizes variance</td></tr>
+<tr><td>Models noise separately (&Psi;)</td><td>No separate noise model</td></tr>
+</table>
+</div>
+
+<!-- Q3 -->
+<div class="qbox">
+<div class="qhead">3. Relationship between Hidden States and Observations in an HMM <span class="marks">[5 Marks]</span></div>
+
+<p>A <b>Hidden Markov Model</b> is a doubly stochastic process. The underlying
+process is a Markov chain of <b>hidden states</b> (q<sub>1</sub>…q<sub>T</sub>)
+which cannot be observed directly. Each hidden state emits a visible
+<b>observation</b> (o<sub>1</sub>…o<sub>T</sub>), and only these observations
+are available to us.</p>
+
+<div class="sub">Relationship</div>
+<ul>
+<li><b>States are hidden, observations are visible:</b> the state must be
+inferred from the observation sequence.</li>
+<li><b>Transition probability A:</b> a<sub>ij</sub> = P(q<sub>t</sub>=S<sub>j</sub> |
+q<sub>t-1</sub>=S<sub>i</sub>) — links one hidden state to the next
+(first-order Markov assumption).</li>
+<li><b>Emission probability B:</b> b<sub>j</sub>(o<sub>t</sub>) =
+P(o<sub>t</sub> | q<sub>t</sub>=S<sub>j</sub>) — this is the direct link
+between a hidden state and its observation.</li>
+<li><b>Output independence:</b> the current observation depends only on the
+current state, not on previous states or observations.</li>
+</ul>
+
+<div class="sub">Joint Probability</div>
+<div class="eq">P(O, Q) = &pi;<sub>q1</sub> &prod;<sub>t=2..T</sub> a<sub>q(t-1)q(t)</sub> &prod;<sub>t=1..T</sub> b<sub>q(t)</sub>(o<sub>t</sub>)</div>
+
+<div class="sub">Example</div>
+<p>Hidden states = {Rainy, Sunny}; Observations = {Umbrella, No Umbrella}.
+We cannot see the weather, but from whether a person carries an umbrella we
+infer the weather. Decoding the most likely hidden state sequence is done by
+the <b>Viterbi algorithm</b>.</p>
+</div>
+
+<!-- Q4 -->
+<div class="qbox">
+<div class="qhead">4. Conditional Random Fields (CRF) <span class="marks">[5 Marks]</span></div>
+
+<p><b>Definition:</b> A Conditional Random Field is a <b>discriminative,
+undirected probabilistic graphical model</b> used for structured prediction
+(sequence labelling). It directly models the conditional distribution
+P(Y | X) of the label sequence Y given the observation sequence X.</p>
+
+<div class="sub">Linear-Chain CRF Formula</div>
+<div class="eq">P(y | x) = (1 / Z(x)) &middot; exp( &Sigma;<sub>t</sub> &Sigma;<sub>k</sub> &lambda;<sub>k</sub> f<sub>k</sub>(y<sub>t-1</sub>, y<sub>t</sub>, x, t) )</div>
+<ul>
+<li><b>f<sub>k</sub></b> – feature functions defined on labels and the input.</li>
+<li><b>&lambda;<sub>k</sub></b> – weights learned from training data.</li>
+<li><b>Z(x)</b> – partition function used for normalization.</li>
+</ul>
+
+<div class="sub">Key Points</div>
+<ul>
+<li>Since it is conditional, it can use <b>rich, overlapping features</b> of the
+whole input without modelling P(X).</li>
+<li>Global normalization avoids the <b>label-bias problem</b> of MEMMs.</li>
+<li>Training uses maximum conditional log-likelihood with gradient methods;
+inference uses Viterbi / forward–backward.</li>
+</ul>
+
+<div class="sub">Applications</div>
+<p>Part-of-Speech tagging, Named Entity Recognition, shallow parsing, gene
+prediction in bioinformatics, and image segmentation.</p>
+
+<table>
+<tr><th>HMM</th><th>CRF</th></tr>
+<tr><td>Generative, models P(X, Y)</td><td>Discriminative, models P(Y | X)</td></tr>
+<tr><td>Strong independence assumptions</td><td>Allows dependent, overlapping features</td></tr>
+</table>
+</div>
+
+<!-- Q5 -->
+<div class="qbox">
+<div class="qhead">5. Mixtures of Gaussians and their Use in Probabilistic Clustering <span class="marks">[10 Marks]</span></div>
+
+<p><b>Definition:</b> A Gaussian Mixture Model (GMM) is a probabilistic model
+which assumes that the data is generated from a weighted combination of a
+finite number of Gaussian distributions with unknown parameters. Each Gaussian
+component represents one cluster.</p>
+
+<div class="sub">Mathematical Model</div>
+<div class="eq">p(x) = &Sigma;<sub>k=1..K</sub> &pi;<sub>k</sub> N(x | &mu;<sub>k</sub>, &Sigma;<sub>k</sub>)</div>
+<ul>
+<li><b>K</b> – number of Gaussian components (clusters).</li>
+<li><b>&pi;<sub>k</sub></b> – mixing coefficient, 0 &le; &pi;<sub>k</sub> &le; 1
+and &Sigma; &pi;<sub>k</sub> = 1.</li>
+<li><b>&mu;<sub>k</sub></b> – mean vector, <b>&Sigma;<sub>k</sub></b> –
+covariance matrix of component k.</li>
+<li>A hidden variable z indicates which component generated a data point.</li>
+</ul>
+
+<div class="sub">Parameter Estimation using EM</div>
+<ul>
+<li><b>Initialization:</b> choose initial &pi;<sub>k</sub>, &mu;<sub>k</sub>,
+&Sigma;<sub>k</sub> (often from k-means).</li>
+<li><b>E-Step:</b> compute the responsibility of component k for point
+x<sub>n</sub>:
+<div class="eq">&gamma;(z<sub>nk</sub>) = &pi;<sub>k</sub> N(x<sub>n</sub>|&mu;<sub>k</sub>,&Sigma;<sub>k</sub>) / &Sigma;<sub>j</sub> &pi;<sub>j</sub> N(x<sub>n</sub>|&mu;<sub>j</sub>,&Sigma;<sub>j</sub>)</div></li>
+<li><b>M-Step:</b> update parameters using these responsibilities —
+N<sub>k</sub> = &Sigma;<sub>n</sub> &gamma;(z<sub>nk</sub>),
+&mu;<sub>k</sub> = (1/N<sub>k</sub>) &Sigma;<sub>n</sub> &gamma;(z<sub>nk</sub>) x<sub>n</sub>,
+&Sigma;<sub>k</sub> = (1/N<sub>k</sub>) &Sigma;<sub>n</sub> &gamma;(z<sub>nk</sub>)(x<sub>n</sub>-&mu;<sub>k</sub>)(x<sub>n</sub>-&mu;<sub>k</sub>)<sup>T</sup>,
+&pi;<sub>k</sub> = N<sub>k</sub> / N.</li>
+<li><b>Repeat</b> until the log-likelihood converges.</li>
+</ul>
+
+<div class="sub">Use in Probabilistic (Soft) Clustering</div>
+<ul>
+<li>Instead of assigning a point to exactly one cluster, GMM gives the
+<b>probability of membership</b> in every cluster — this is called soft
+clustering.</li>
+<li>A point can be, for example, 70% in cluster 1 and 30% in cluster 2, which is
+useful when clusters overlap.</li>
+<li>The final hard label (if needed) is the cluster with the highest
+responsibility.</li>
+<li>Because each component has its own covariance matrix, clusters can be
+<b>elliptical, of different size, shape and orientation</b>, unlike k-means
+which assumes spherical clusters.</li>
+<li>Model selection (choosing K) is done using AIC / BIC or cross-validation.</li>
+</ul>
+
+<div class="sub">Advantages</div>
+<ul>
+<li>Soft, probabilistic assignment with a proper statistical foundation.</li>
+<li>Handles overlapping and non-spherical clusters; can be used for density
+estimation, anomaly detection and data generation.</li>
+</ul>
+
+<div class="sub">Limitations</div>
+<ul>
+<li>Number of clusters K must be specified in advance.</li>
+<li>Sensitive to initialization; EM may converge to a local optimum.</li>
+<li>Computationally costlier than k-means; singular covariance problem may occur.</li>
+</ul>
+
+<div class="sub">Applications</div>
+<p>Speaker recognition, image segmentation, customer segmentation, background
+subtraction in videos, and anomaly detection.</p>
+</div>
+
+<!-- Q6 -->
+<div class="qbox">
+<div class="qhead">6. Undirected Graphical Model - Components and Uses <span class="marks">[10 Marks]</span></div>
+
+<p><b>Definition:</b> An Undirected Graphical Model, also called a <b>Markov
+Random Field (MRF)</b> or Markov Network, is a probabilistic model in which
+random variables are represented as nodes of an <b>undirected graph</b> and the
+edges represent mutual (symmetric) dependency rather than cause–effect
+direction.</p>
+
+<div class="sub">Main Components</div>
+<ul>
+<li><b>Nodes (Vertices):</b> each node represents one random variable, which may
+be observed or hidden.</li>
+<li><b>Undirected Edges:</b> an edge between two nodes means the two variables
+are directly dependent on each other; absence of an edge implies conditional
+independence.</li>
+<li><b>Cliques:</b> a clique is a subset of nodes in which every pair of nodes
+is connected. A <b>maximal clique</b> cannot be extended by adding another
+node. The joint distribution is factorized over maximal cliques.</li>
+<li><b>Potential Functions (Factors) &psi;<sub>C</sub>:</b> a non-negative
+function defined on each clique C which measures how compatible the variable
+values in that clique are. Unlike CPTs in Bayesian networks, these are
+<b>not probabilities</b>.</li>
+<li><b>Partition Function Z:</b> the normalization constant that makes the
+total probability equal to 1.</li>
+</ul>
+
+<div class="sub">Joint Distribution</div>
+<div class="eq">P(X) = (1/Z) &prod;<sub>C &isin; cliques</sub> &psi;<sub>C</sub>(X<sub>C</sub>) ,&nbsp;&nbsp;
+Z = &Sigma;<sub>X</sub> &prod;<sub>C</sub> &psi;<sub>C</sub>(X<sub>C</sub>)</div>
+<p>Writing &psi;<sub>C</sub> = exp(-E(X<sub>C</sub>)) gives the <b>Gibbs /
+Boltzmann distribution</b>, where E is an energy function; lower energy means
+higher probability.</p>
+
+<div class="sub">Conditional Independence (Markov Properties)</div>
+<ul>
+<li><b>Pairwise:</b> two non-adjacent nodes are independent given all other
+nodes.</li>
+<li><b>Local (Markov blanket):</b> a node is independent of all other nodes
+given its immediate neighbours.</li>
+<li><b>Global:</b> sets A and B are independent given S if every path from A to
+B passes through S (graph separation).</li>
+<li><b>Hammersley–Clifford theorem:</b> for strictly positive distributions,
+the Markov properties and clique factorization are equivalent.</li>
+</ul>
+
+<div class="sub">Common Types</div>
+<ul>
+<li><b>Ising / Potts model</b> – used in physics and image modelling.</li>
+<li><b>Boltzmann Machine and Restricted Boltzmann Machine (RBM)</b> – energy
+based learning models.</li>
+<li><b>Conditional Random Fields (CRF)</b> – discriminative undirected model for
+sequence labelling.</li>
+</ul>
+
+<div class="sub">Uses / Applications</div>
+<ul>
+<li><b>Computer vision:</b> image denoising, image segmentation, stereo matching
+and texture modelling, where neighbouring pixels influence each other
+symmetrically.</li>
+<li><b>Natural Language Processing:</b> POS tagging, NER and information
+extraction using CRFs.</li>
+<li><b>Social network analysis</b> and relational data, where relationships have
+no natural direction.</li>
+<li><b>Bioinformatics:</b> protein structure prediction and gene interaction
+networks.</li>
+<li><b>Recommendation and deep learning:</b> RBMs for collaborative filtering
+and pre-training.</li>
+</ul>
+
+<div class="sub">Advantages and Limitations</div>
+<ul>
+<li><b>Advantages:</b> naturally models symmetric/cyclic relationships; simple
+conditional independence test using separation; flexible potential functions.</li>
+<li><b>Limitations:</b> computing the partition function Z is intractable for
+large graphs, so approximate inference (Gibbs sampling, loopy belief
+propagation, variational methods) is required; parameters are less
+interpretable than in Bayesian networks.</li>
+</ul>
+
+<table>
+<tr><th>Directed Model (Bayesian Network)</th><th>Undirected Model (MRF)</th></tr>
+<tr><td>Edges show causal direction</td><td>Edges show mutual dependency</td></tr>
+<tr><td>Uses conditional probability tables</td><td>Uses clique potential functions</td></tr>
+<tr><td>No normalization constant needed</td><td>Needs partition function Z</td></tr>
+<tr><td>Must be acyclic (DAG)</td><td>Cycles are allowed</td></tr>
+</table>
+</div>
+
+</body>
+</html>
